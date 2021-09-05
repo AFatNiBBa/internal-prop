@@ -3,7 +3,8 @@
 Gives access to native objects internal properties, such as a proxy's `[[Target]]` or `[[Handler]]`
 
 ## Warning
-This module is native, it means that it contains c++ code that gets compiled every time the module is installed to ensure that the binaries can be read by your machine, the problem is that node apparently uses external tools that may be not present in your machine
+This module is native, it means that it contains c++ code that gets compiled every time the module is installed to ensure that the binaries can be read by your machine, the problem is that node apparently uses external tools that may be not present in your machine. <br>
+If the compiled code can't be found, `undefined` will be returned
 
 ## Usage
 The module gives you indipendent functions that you can use to extract internal properties of objects
