@@ -3,7 +3,7 @@ try
 {
     module.exports = require(`../build/Release/internal.node`);
 }
-catch()
+catch
 {
     module.exports = undefined;
 }
