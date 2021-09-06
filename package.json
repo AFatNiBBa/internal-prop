@@ -1,22 +1,30 @@
 {
   "name": "internal-prop",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Gives access to native objects internal properties, such as proxy's [[Target]] and [[Handler]]",
   "main": "src/main.js",
   "scripts": {
     "save": "npm publish & push"
   },
   "keywords": [
-    "proxy",
-    "jsproxy",
-    "promise",
     "internal",
     "native",
+    "proxy",
+    "jsproxy",
     "target",
+    "[[Target]]",
     "handler",
+    "[[Handler]]",
+    "promise",
     "resonse",
-    "status"
+    "[[PromiseResponse]]",
+    "status",
+    "[[PromiseState]]"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AFatNiBBa/internal-prop"
+  },
   "author": "AFatNiBBa",
   "license": "ISC"
 }
