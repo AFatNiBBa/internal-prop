@@ -1,5 +1,7 @@
 # Build
 build/
+.vscode/
+package-lock.json
 
 # Logs
 logs
