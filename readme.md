@@ -52,3 +52,5 @@ If the object is not of the correct type (e.g. `fromProxy(obj)` wants `obj` to b
         priv.field = 3;
         console.log(priv.field, inst.get()); // 3 3
         ```
+        ### But doesn't it break encapsulation?
+        <img src="https://i.imgur.com/7LrSrmZ.jpg" width=100 />

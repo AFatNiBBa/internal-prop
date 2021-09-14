@@ -66,7 +66,7 @@ void getOwnPrivateSymbols(const FunctionCallbackInfo<Value> &info)
 		: info[0].As<Object>()->GetPropertyNames(
 			isolate->GetCurrentContext(),
 			KeyCollectionMode::kIncludePrototypes,	// Search on the prototype too
-			(PropertyFilter)64,						// Only private properties (The number is raw because is defined only for debug)
+			(PropertyFilter)64,						// Only private properties (The number is raw because it is apparently defined only on debug mode)
 			IndexFilter::kSkipIndices,				// Skip the number indices
 			KeyConversionMode::kNoNumbers			// Basically ↑
 		).ToLocalChecked()
