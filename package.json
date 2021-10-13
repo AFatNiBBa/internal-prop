@@ -1,6 +1,6 @@
 {
   "name": "internal-prop",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Gives access to native objects internal properties, such as proxy's [[Target]] and [[Handler]]",
   "main": "src/main.js",
   "scripts": {
