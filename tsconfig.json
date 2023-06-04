@@ -5,7 +5,7 @@
 		"module": "UMD",
 		"removeComments" : false,
 		"strictNullChecks": false,
-		"outDir" : "./build",
+		"outDir" : "./dist",
 		"experimentalDecorators": true,
 		"baseUrl" : "./",
 		"declaration" : true,

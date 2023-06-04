@@ -5,6 +5,7 @@ Gives access to native objects internal properties, such as a proxy's `[[Target]
 ## Warning
 This module is native, it means that it contains c++ code that gets compiled every time the module is installed to ensure that the binaries can be read by your machine, the problem is that node apparently uses external tools that may be not present in your machine. <br>
 If you don't have the necessary to compile the binaries `npm` should tell you what you need too do to achieve that. <br>
+If the compilation fails regardless try deleting the `node-gyp` cache folder (Located at `"%localappdata%\node-gyp"` on windows)
 
 ## Usage
 The module gives you indipendent functions that you can use to extract internal properties of objects
