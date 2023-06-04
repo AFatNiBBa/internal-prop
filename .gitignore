@@ -3,8 +3,8 @@ prv_*
 desktop.ini
 
 # Build
-build/
-.vscode/
+# build/
+# .vscode/
 package-lock.json
 
 # Logs
