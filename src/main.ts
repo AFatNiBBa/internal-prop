@@ -4,7 +4,7 @@ exports.fromProxy = exports.fromPromise = exports.getOwnPrivateSymbols = void 0;
 
 /** Contains `true` if the loading was successful */
 export var ok = true;
-try { Object.assign(module.exports, require("./internal.node")); }
+try { Object.assign(module.exports, require("../build/internal.node")); }
 catch { ok = false; }
 
 /** Possible states of a {@link Promise} */

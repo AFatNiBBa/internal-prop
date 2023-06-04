@@ -14,7 +14,7 @@
     /** Contains `true` if the loading was successful */
     exports.ok = true;
     try {
-        Object.assign(module.exports, require("./internal.node"));
+        Object.assign(module.exports, require("../build/internal.node"));
     }
     catch {
         exports.ok = false;
