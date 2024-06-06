@@ -1,10 +1,11 @@
 {
   "name": "internal-prop",
-  "version": "3.0.3",
+  "version": "3.0.5",
   "description": "Gives access to native objects internal properties, such as proxy's [[Target]] and [[Handler]]",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "scripts": {
-    "save": "tsc & npm publish & push"
+    "build": "tsc",
+    "save": "npm run build & npm publish"
   },
   "keywords": [
     "internal",
@@ -31,6 +32,7 @@
   "author": "AFatNiBBa",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.2.5"
+    "@types/node": "^20.2.5",
+    "typescript": "^5.4.5"
   }
 }

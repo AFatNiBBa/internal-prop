@@ -1,0 +1,6 @@
+
+# Inclusi
+!dist/
+!binding.gyp
+!package.json
+!readMe.md

@@ -1,16 +1,14 @@
 {
-	"version" : "3.1.0",
-	"include": [ "./src/**/*.ts" ],
-	"compilerOptions" : {
-		"module": "UMD",
-		"removeComments" : false,
-		"strictNullChecks": false,
-		"outDir" : "./dist",
-		"experimentalDecorators": true,
-		"baseUrl" : "./",
-		"declaration" : true,
-		"strict": false,
-		"target": "ESNext",
-		"moduleResolution": "nodenext"
-	}
+    "include": [ "src/**/*.ts" ],
+    "compilerOptions": {
+        "outDir" : "./dist",
+        "declaration": true,
+        "moduleResolution": "Node",
+        "module": "CommonJS",
+        
+        "strictFunctionTypes": false,
+        "noImplicitThis": true,
+        "target": "ESNext",
+        "strict": true
+    }
 }

@@ -2,7 +2,7 @@
 	"targets": [
 		{
 			"target_name": "internal",
-			"sources": [ "src/main.cpp" ]
+			"sources": [ "src/index.cpp" ]
 		},
 		{
 			"target_name": "copy",

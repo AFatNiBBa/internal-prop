@@ -1,6 +1,6 @@
 
-declare const exports: typeof import("./main");
-exports.fromProxy = exports.fromPromise = exports.getOwnPrivateSymbols = void 0;
+declare const exports: typeof import("./index");
+exports.fromProxy = exports.fromPromise = exports.getOwnPrivateSymbols = undefined!;
 
 /** Contains `true` if the loading was successful */
 export var ok = true;
@@ -15,7 +15,7 @@ export enum State { pending, fulfilled, rejected }
  * If {@link obj} is not a {@link Proxy} it returns `null`
  * @param obj The {@link Proxy}
  */
-export declare function fromProxy(obj: any): [ object, ProxyHandler<object> ];
+export declare function fromProxy(obj: object): [ object, ProxyHandler<object> ] | null;
 
 /**
  * Gets the value and status of {@link obj} synchronously.
@@ -23,7 +23,7 @@ export declare function fromProxy(obj: any): [ object, ProxyHandler<object> ];
  * If the state is {@link State.pending} the value will be `null`
  * @param obj The {@link Promise}
  */
-export declare function fromPromise<T>(obj: Promise<T>): [ State, T ];
+export declare function fromPromise<T>(obj: Promise<T>): [ State, T | null ];
 
 /**
  * Gets the keys of the private properties of {@link obj}.
@@ -39,14 +39,12 @@ export declare function getOwnPrivateSymbols(obj: object): symbol[];
  * @param out The inspector object
  * @returns The same thing passed to {@link out}
  */
-export function accessPrivate(obj: object, proto = false, out?: object): object {
-    if (!obj || typeof obj !== "object") return null;
-
-    out ??= {};
+export function accessPrivate(obj: object, proto = false, out = {}): object {
+    var temp: string | undefined;
     for (const k of exports.getOwnPrivateSymbols(obj))
-        if (k.description.startsWith("#"))
-            Object.defineProperty(out, k.description.substr(1), { enumerable: true, get: () => obj[k], set: v => obj[k] = v });
-    if (proto)
-        accessPrivate(Object.getPrototypeOf(obj), true, out);
-    return out;
+        if ((temp = k.description) && temp.startsWith("#"))
+            Object.defineProperty(out, temp.substring(1), { enumerable: true, get: () => (<any>obj)[k], set: v => (<any>obj)[k] = v });
+    return proto
+        ? accessPrivate(Object.getPrototypeOf(obj), true, out)
+        : out;
 }
