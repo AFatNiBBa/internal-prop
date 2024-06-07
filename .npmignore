@@ -4,7 +4,7 @@
 
 # Inclusi
 !dist/
-!dist/**
+!dist/index.*
 !src/
 !src/index.cpp
 !binding.gyp

@@ -11,7 +11,7 @@
 			"copies": [
 				{
 					"files": [ "<(PRODUCT_DIR)/internal.node" ],
-					"destination": "./build"
+					"destination": "./dist"
 				}
 			]
 		}

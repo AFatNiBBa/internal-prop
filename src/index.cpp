@@ -2,49 +2,83 @@
 #include <node.h>
 
 using namespace v8;
- 
-void fromProxy(const FunctionCallbackInfo<Value> &info) {
+
+/// The hidden property-filter for getting private symbols
+const auto FILTER_PRIVATE_SYMBOLS = (PropertyFilter)64;
+
+/// Shorthand for returning values
+#define RETURN(info, value) { info.GetReturnValue().Set(value); return; }
+
+/// Shorthand for setting object properties
+#define SET(isolate, ctx, obj, k, v) obj->Set(ctx, String::NewFromUtf8(isolate, k).ToLocalChecked(), v)
+
+/// <summary>
+/// Gets the target and the handler of a proxy.
+/// If the provided value is not a proxy it returns null
+/// </summary>
+/// <param name="info">The function arguments</param>
+static void getProxyData(const FunctionCallbackInfo<Value>& info)
+{
 	auto isolate = info.GetIsolate();
-	if (info[0]->IsProxy())
-	{
-		auto temp = info[0].As<Proxy>();
-		Local<Value> out[] = { temp->GetTarget(), temp->GetHandler() };
-		info.GetReturnValue().Set(Array::New(isolate, out, 2));
-	}
-	else info.GetReturnValue().Set(Null(isolate));
+	auto& value = info[0];
+	if (!value->IsProxy())
+		RETURN(info, Null(isolate));
+	
+	auto out = Object::New(isolate);
+	auto ctx = isolate->GetCurrentContext();
+	auto proxy = value.As<Proxy>();
+	SET(isolate, ctx, out, "target", proxy->GetTarget());
+	SET(isolate, ctx, out, "handler", proxy->GetTarget());
+	RETURN(info, out);
 }
 
-void fromPromise(const FunctionCallbackInfo<Value> &info) {
+/// <summary>
+/// Gets the state and the result of a promise.
+/// If the provided value is not a promise it returns null
+/// </summary>
+/// <param name="info">The function arguments</param>
+static void getPromiseData(const FunctionCallbackInfo<Value>& info)
+{
 	auto isolate = info.GetIsolate();
-	if (info[0]->IsPromise())
-	{
-		auto temp = info[0].As<Promise>();
-		auto state = temp->State();
-		auto value = state == Promise::PromiseState::kPending ? (Local<Value>)Null(isolate) : temp->Result();
-		Local<Value> out[] = { Number::New(isolate, state), value };
-		info.GetReturnValue().Set(Array::New(isolate, out, 2));
-	}
-	else info.GetReturnValue().Set(Null(isolate));
+	auto& value = info[0];
+	if (!value->IsPromise())
+		RETURN(info, Null(isolate));
+
+	auto out = Object::New(isolate);
+	auto ctx = isolate->GetCurrentContext();
+	auto promise = value.As<Promise>();
+	auto state = promise->State();
+	auto result = Promise::PromiseState::kPending ? (Local<Value>)Null(isolate) : promise->Result();
+	SET(isolate, ctx, out, "state", Number::New(isolate, state));
+	SET(isolate, ctx, out, "result", result);
+	RETURN(info, out);
 }
 
-void getOwnPrivateSymbols(const FunctionCallbackInfo<Value> &info) {
+/// <summary>
+/// Gets the symbols of the private fields of an object.
+/// If the provided value is not an object it returns null
+/// </summary>
+/// <param name="info">The function arguments</param>
+static void getOwnPrivateSymbols(const FunctionCallbackInfo<Value>& info)
+{
 	auto isolate = info.GetIsolate();
-	auto result = !info[0]->IsObject()
-		? (Local<Value>)Null(isolate)
-		: info[0].As<Object>()->GetPropertyNames(
-			isolate->GetCurrentContext(),
-			KeyCollectionMode::kOwnOnly,			// Doesn't search on the prototype
-			(PropertyFilter)64,						// Only private properties (The number is raw because it is apparently defined only on debug mode)
-			IndexFilter::kSkipIndices,				// Skip the number indices
-			KeyConversionMode::kNoNumbers			// Do not convert the numbers keys (Which should not be present) to actual numbers
-		).ToLocalChecked();
-	info.GetReturnValue().Set(result);
+	auto& value = info[0];
+	if (!value->IsObject())
+		RETURN(info, Null(isolate));
+
+	auto obj = value.As<Object>();
+	auto ctx = isolate->GetCurrentContext();
+	auto out = obj->GetPropertyNames(ctx, KeyCollectionMode::kOwnOnly, FILTER_PRIVATE_SYMBOLS, IndexFilter::kSkipIndices, KeyConversionMode::kNoNumbers);
+	RETURN(info, out.ToLocalChecked());
 }
 
-void init(Local<Object> exports, Local<Value> module, Local<Context> context) {
-	NODE_SET_METHOD(exports, "fromProxy", fromProxy);
-	NODE_SET_METHOD(exports, "fromPromise", fromPromise);
-	NODE_SET_METHOD(exports, "getOwnPrivateSymbols", getOwnPrivateSymbols);
+static void init(Local<Object> exports, Local<Value>, Local<Context>)
+{
+	#define EXPORT(name) NODE_SET_METHOD(exports, #name, name)
+
+	EXPORT(getProxyData);
+	EXPORT(getPromiseData);
+	EXPORT(getOwnPrivateSymbols);
 }
 
 NODE_MODULE(internal, init)
