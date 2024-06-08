@@ -28,7 +28,7 @@ static void getProxyData(const FunctionCallbackInfo<Value>& info)
 	auto ctx = isolate->GetCurrentContext();
 	auto proxy = value.As<Proxy>();
 	SET(isolate, ctx, out, "target", proxy->GetTarget());
-	SET(isolate, ctx, out, "handler", proxy->GetTarget());
+	SET(isolate, ctx, out, "handler", proxy->GetHandler());
 	RETURN(info, out);
 }
 
